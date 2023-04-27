@@ -15,6 +15,8 @@ set_replay = False
 
 client = MongoClient('mongodb://'+ DB_USER + ':'+ DB_PASS + '@' + DB_ADDRESS + ':' + DB_PORT)
 
+db = client['replaydata']
+
 LViewPlus64_script_info = {
 	"script": "Extractor",
 	"author": "MiscellaneousStuff",
@@ -246,20 +248,17 @@ def dump(obj):
         })
 
     if obj.time == gametime and gametime > 20:
-        db = client['replaydata']
         results = list(db.temp.find())
         db['13.8'].update_one(db['13.8'].find_one(sort=[("index", -1), ("page_index", -1)], limit=1), {"$push": {"snapshots": {"$each": results}}})
         db.temp.delete_many({})
         os.system(r'taskkill /im "League of Legends.exe" /f')
     elif snapshot_index % 50 == 0:
-        db = client['replaydata']
         results = list(db.temp.find())
         db['13.8'].update_one(db['13.8'].find_one(sort=[("index", -1), ("page_index", -1)], limit=1), {"$push": {"snapshots": {"$each": results}}})
         page_index += 1
         db['13.8'].insert_one({"index": db['13.8'].find_one(sort=[("index", -1), ("page_index", -1)], limit=1)['index'], "page_index": page_index, "snapshots": []})
         db.temp.delete_many({})
     else:
-        db = client['replaydata']
         db.temp.insert_one(d)
     snapshot_index += 1
     gametime = obj.time
