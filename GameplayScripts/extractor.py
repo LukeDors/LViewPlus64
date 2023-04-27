@@ -247,15 +247,14 @@ def dump(obj):
         client = MongoClient('localhost', 27017)
         db = client['replaydata']
         results = list(db.temp.find())
-        db['13.8'].update_one({"index": db['13.8'].find_one(sort=[("index", -1), ("page_index", -1)], limit=1)['index']}, {"$push": {"snapshots": {"$each": results}}})
+        db['13.8'].update_one(db['13.8'].find_one(sort=[("index", -1), ("page_index", -1)], limit=1), {"$push": {"snapshots": {"$each": results}}})
         db.temp.delete_many({})
         os.system(r'taskkill /im "League of Legends.exe" /f')
     elif snapshot_index % 50 == 0:
-        print(snapshot_index)
         client = MongoClient('localhost', 27017)
         db = client['replaydata']
         results = list(db.temp.find())
-        db['13.8'].update_one({"index": db['13.8'].find_one(sort=[("index", -1), ("page_index", -1)], limit=1)['index']}, {"$push": {"snapshots": {"$each": results}}})
+        db['13.8'].update_one(db['13.8'].find_one(sort=[("index", -1), ("page_index", -1)], limit=1), {"$push": {"snapshots": {"$each": results}}})
         page_index += 1
         db['13.8'].insert_one({"index": db['13.8'].find_one(sort=[("index", -1), ("page_index", -1)], limit=1)['index'], "page_index": page_index, "snapshots": []})
         db.temp.delete_many({})
@@ -273,3 +272,6 @@ def LViewPlus64_update(game, ui):
     global snapshot_index
     global page_index
     dump(game)
+    if game.time > 15.0:
+        if not set_replay:
+            set_replay = True
