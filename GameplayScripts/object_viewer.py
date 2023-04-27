@@ -109,6 +109,11 @@ def draw_missile(obj, ui):
 
 
 def draw_game_object(obj, ui, additional_draw=None, set_open=False):
+    team = str(obj.team)
+    if str(team) == '100':
+        team = 'blue'
+    else:
+        team = 'red'
     if obj == None:
         ui.text("null", Color.RED)
         return
@@ -119,16 +124,20 @@ def draw_game_object(obj, ui, additional_draw=None, set_open=False):
         ui.labeltext("net_id", hex(obj.net_id))
         ui.labeltext("name", obj.name, Color.ORANGE)
         ui.labeltext("pos", f"x={obj.pos.x:.2f}, y={obj.pos.y:.2f}, z={obj.pos.z:.2f}")
+        #ui.labeltext("team", obj.team)
         ui.dragint("id", obj.id)
 
         ui.separator()
         ui.dragfloat("health", obj.health)
+        ui.dragfloat("maxhealth", obj.max_health)
         ui.dragfloat("lvl", obj.lvl)
         ui.dragfloat("mana", obj.mana)
         ui.dragfloat("max_mana", obj.max_mana)
         ui.dragfloat("health_regen", obj.health_regen)
         ui.dragfloat("mana_regen", obj.mana_regen)
         ui.checkbox("is_alive", obj.is_alive)
+        ui.labeltext("team", team) 
+        ui.checkbox("recall_state", obj.isRecalling)
 
         ui.separator()
         ui.dragfloat("currentDashSpeed", obj.currentDashSpeed)
