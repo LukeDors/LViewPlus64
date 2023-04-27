@@ -1,12 +1,11 @@
 from LViewPlus64 import *
 
 import requests
-import sys
-import json
 import time
 import os
-import bson
 from pymongo import MongoClient
+
+from config import DB_ADDRESS, DB_PORT
 
 from urllib3.exceptions import InsecureRequestWarning
 
@@ -274,18 +273,3 @@ def LViewPlus64_update(game, ui):
     global snapshot_index
     global page_index
     dump(game)
-    if game.time > 15.0:
-        if not set_replay:
-            requests.post(
-                'https://127.0.0.1:2999/replay/playback',
-                headers={
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                data = json.dumps({
-                    "time": 2,
-                    "speed": replay_speed
-                }),
-                verify=False
-            )
-            set_replay = True
