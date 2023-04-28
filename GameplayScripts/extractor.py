@@ -1,8 +1,6 @@
 from LViewPlus64 import *
 
 import requests
-import time
-import os
 import traceback
 from pymongo import MongoClient
 
@@ -25,8 +23,6 @@ LViewPlus64_script_info = {
 
 c = ['aatrox', 'ahri', 'akali', 'akshan', 'alistar', 'amumu', 'anivia', 'annie', 'aphelios', 'ashe', 'aurelionsol', 'azir', 'bard', 'belveth', 'blitzcrank', 'brand', 'braum', 'caitlyn', 'camille', 'cassiopeia', 'chogath', 'corki', 'darius', 'diana', 'drmundo', 'draven', 'ekko', 'elise', 'evelynn', 'ezreal', 'fiddlesticks', 'fiora', 'fizz', 'galio', 'gangplank', 'garen', 'gnar', 'gragas', 'graves', 'hecarim', 'heimerdinger', 'illaoi', 'irelia', 'ivern', 'janna', 'jarvaniv', 'jax', 'jayce', 'jhin', 'jinx', 'ksante', 'kaisa', 'kalista', 'karma', 'karthus', 'kassadin', 'katarina', 'kayle', 'kayn', 'kennen', 'khazix', 'kindred', 'kled', 'kogmaw', 'leblanc', 'leesin', 'leona', 'lillia', 'lissandra', 'lucian', 'lulu', 'lux', 'malphite', 'malzahar', 'maokai', 'masteryi', 'milio', 'missfortune', 'mordekaiser',
      'morgana', 'nami', 'nasus', 'nautilus', 'neeko', 'nidalee', 'nilah', 'nocturne', 'nunu', 'olaf', 'orianna', 'ornn', 'pantheon', 'poppy', 'pyke', 'qiyana', 'quinn', 'rakan', 'rammus', 'reksai', 'rell', 'renataglasc', 'renekton', 'rengar', 'riven', 'rumble', 'ryze', 'samira', 'sejuani', 'senna', 'seraphine', 'sett', 'shaco', 'shen', 'shyvana', 'singed', 'sion', 'sivir', 'skarner', 'sona', 'soraka', 'swain', 'sylas', 'syndra', 'tahmkench', 'taliyah', 'talon', 'taric', 'teemo', 'thresh', 'tristana', 'trundle', 'tryndamere', 'twistedfate', 'twitch', 'udyr', 'urgot', 'varus', 'vayne', 'veigar', 'velkoz', 'vi', 'viego', 'viktor', 'vladimir', 'volibear', 'warwick', 'monkeyking', 'xayah', 'xerath', 'xinzhao', 'yasuo', 'yone', 'yorick', 'yuumi', 'zac', 'zed', 'zeri', 'ziggs', 'zilean', 'zoe', 'zyra']
-
-replay_speed = 16
 
 
 def LViewPlus64_load_cfg(cfg):
@@ -291,22 +287,21 @@ def dump(obj):
     #     db.temp.delete_many({})
     #     os.system(r'taskkill /im "League of Legends.exe" /f')
     # elif snapshot_index % 50 == 0:
-    #     print("second")
-    #     results = list(db.temp.find())
-    #     print(results)
-    #     db['13.8'].update_one(db['13.8'].find_one(sort=[(
-    #         "index", -1), ("page_index", -1)], limit=1), {"$push": {"snapshots": {"$each": results}}})
-    #     page_index += 1
-    #     db['13.8'].insert_one({"index": db['13.8'].find_one(sort=[(
-    #         "index", -1), ("page_index", -1)], limit=1)['index'], "page_index": page_index, "snapshots": []})
-    #     db.temp.delete_many({})
+    # print("second")
+    # results = list(db.temp.find())
+    # print(results)
+    # db['13.8'].update_one(db['13.8'].find_one(sort=[(
+    #     "index", -1), ("page_index", -1)], limit=1), {"$push": {"snapshots": {"$each": results}}})
+    # page_index += 1
+    # db['13.8'].insert_one({"index": db['13.8'].find_one(sort=[(
+    #     "index", -1), ("page_index", -1)], limit=1)['index'], "page_index": page_index, "snapshots": []})
+    # db.temp.delete_many({})
     # else:
     db.temp.insert_one(d)
     snapshot_index += 1
 
 
 def LViewPlus64_update(game, ui):
-    global snapshot_index
     try:
         dump(game)
     except Exception as e:
