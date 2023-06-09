@@ -4,6 +4,8 @@
 #include "LeagueMemoryReader.h"
 #include "MemSnapshot.h"
 #include "PyGame.h"
+#include <iostream>
+#include <sstream>
 
 
 #include <string>
@@ -160,11 +162,9 @@ void Overlay::StartFrame()
 }
 
 void Overlay::Update(MemSnapshot& memSnapshot) {
-
 	// Simple check to see if game ended
 //	if (memSnapshot.champions.size() == 0 || !isWindowVisible)
 //		return;
-
 	PyGame state = PyGame::ConstructFromMemSnapshot(memSnapshot);
 
 	DrawOverlayWindows(state);
