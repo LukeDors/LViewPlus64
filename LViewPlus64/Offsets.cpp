@@ -6,7 +6,7 @@ for evade use spellbook activespell and/or missilelist
 
 Offsets::Offsets() {};
 
-int Offsets::GameTime						 = 0x51CC730; // 15.7 F3 0F 5C 35 ?? ?? ?? ?? 0F 28 F8
+int Offsets::GameTime						 = 0x51CE730; // 15.7 F3 0F 5C 35 ?? ?? ?? ?? 0F 28 F8
 
 int Offsets::ObjIndex                        = 0x10; //
 int Offsets::ObjTeam                         = 0x3C; //
@@ -89,8 +89,8 @@ int Offsets::IsMoving = 0x198;
 int Offsets::NavBegin = 0x1BC;
 int Offsets::NavEnd = 0x1C0;
 
-int Offsets::ViewProjMatrices = 0x5219A80; // 15.7 48 8D 0D ? ? ? ? 0F 10 00 
-int Offsets::Renderer = 0x5221F28; // 15.7 48 8B 0D ? ? ? ? 4C 8D 45 87 48 8B D0
+int Offsets::ViewProjMatrices = 0x521BA80; // 15.7 48 8D 0D ? ? ? ? 0F 10 00 
+int Offsets::Renderer = 0x5223F28; // 15.7 48 8B 0D ? ? ? ? 4C 8D 45 87 48 8B D0
 int Offsets::RendererWidth = 0xC; //
 int Offsets::RendererHeight = 0x10; //
 
@@ -109,12 +109,12 @@ int Offsets::SpellSlotSmiteCharges = 0x5C;
 
 int Offsets::ObjectManager = 0x21218C8; // 15.7 [actual address in first opcode] 89 57 10 48 8B 0D ? ? ? ?
 
-int Offsets::HeroList = 0x21219E8; //0x20D5978
-int Offsets::MinionList = 0x397C278; //
-int Offsets::MissileList = 0x51DA600; //
-int Offsets::TurretList = 0x51C8860; //
+int Offsets::HeroList = 0x21239E8; //0x20D5978
+int Offsets::MinionList = 0x397E278; //
+int Offsets::MissileList = 0x51DC608; //
+int Offsets::TurretList = 0x51CA860; //
 
-int Offsets::LocalPlayer = 0x51DA528; // 15.7 48 8B 3D ?? ?? ?? ?? 48 3B CF
+int Offsets::LocalPlayer = 0x51DC530; // 15.7 48 8B 3D ?? ?? ?? ?? 48 3B CF
 int Offsets::UnderMouseObject = 0x397C468; // 15.7 48 89 0D ? ? ? ? 48 8D 05 ? ? ? ? 48 89 01 33 D2
 
 int Offsets::ObjectMapCount               = 0x48; //
@@ -137,7 +137,7 @@ int Offsets::MissileDestIdx = 0x3C8;
 int Offsets::MissileStartPos = 0x38C;
 int Offsets::MissileEndPos = 0x398;
 
-int Offsets::MinimapObject                = 0x51CC790; //
+int Offsets::MinimapObject                = 0x51CE790; //
 int Offsets::MinimapObjectHud             = 0x320; //
 int Offsets::MinimapHudPos                = 0x60; // WorldSize = 0x28;
 int Offsets::MinimapHudSize               = 0x68; // ScreenOffset = 0x60;
@@ -153,4 +153,4 @@ int Offsets::AiManagerDashSpeed = 0x1F8;
 int Offsets::ServerPos = 0x2EC;
 int Offsets::Velocity = 0x2F8;
 
-int Offsets::HudInstance = 0x21218D8; //
+int Offsets::HudInstance = 0x21238D8; //

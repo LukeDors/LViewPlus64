@@ -325,8 +325,32 @@ public:
 		gs.localChampion = snapshot.player.get();
 		gs.map = snapshot.map.get();
 
-		for (auto it = snapshot.champions.begin(); it != snapshot.champions.end(); ++it) {
-			gs.champs.append(boost::ref(**it));
+		try {
+			for (auto it = snapshot.champions.begin(); it != snapshot.champions.end(); ++it) {
+				gs.champs.append(boost::ref(**it));
+			}
+		}
+		catch (const boost::python::error_already_set&) {
+			PyObject* type, * value, * traceback;
+			PyErr_Fetch(&type, &value, &traceback);
+
+			// Print the Python exception traceback
+			PyErr_Print();
+			printf("here");
+			// Handle the exception as needed
+
+			// Access the inner root exception
+			PyObject* rootException = PyObject_GetAttrString(value, "__cause__");
+			if (rootException != nullptr) {
+				PyErr_SetObject(type, rootException);
+				PyErr_Print();
+			}
+
+			// Clean up
+			Py_XDECREF(rootException);
+			Py_XDECREF(type);
+			Py_XDECREF(value);
+			Py_XDECREF(traceback);
 		}
 		for (auto it = snapshot.minions.begin(); it != snapshot.minions.end(); ++it) {
 			gs.minions.append(boost::ref(**it));
