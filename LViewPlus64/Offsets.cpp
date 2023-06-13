@@ -25,22 +25,22 @@ int Offsets::ObjMaxHealth                    = 0x1080; //
 int Offsets::ObjAbilityHaste				 = 0x14A8; //
 int Offsets::ObjLethality					 = 0x15A8; //
 int Offsets::ObjArmor                        = 0x16A4; //
-int Offsets::ObjBonusArmor					 = 0x16A8; //
+int Offsets::ObjBonusArmor					 = 0x1680; //
 int Offsets::ObjMagicRes                     = 0x16AC; //
-int Offsets::ObjBonusMagicRes				 = 0x16B0; //
-int Offsets::ObjBaseAtk                      = 0x167C; // 
+int Offsets::ObjBonusMagicRes				 = 0x1688; //
+int Offsets::ObjBaseAtk                      = 0x1BC8; // 
 int Offsets::ObjBonusAtk                     = 0x1AA8; //
 int Offsets::ObjMoveSpeed                    = 0x16BC; //
-int Offsets::ObjSpellBook                    = 0x3148; // 0x3118
+int Offsets::ObjSpellBook                    = 0x29F8; // 0x3118
 int Offsets::ObjTransformation               = 0x3040;
 int Offsets::ObjName                         = 0x38C8; //
 int Offsets::PlayerName						 = 0x60; //
-int Offsets::ObjLvl                          = 0x4030; // ????
+int Offsets::ObjLvl                          = 0x4038; // ????
 int Offsets::ObjExpiry                       = 0x340; 
 int Offsets::ObjCrit                         = 0x1C88; //
 int Offsets::ObjCritMulti                    = 0x12D4; //
 int Offsets::ObjAbilityPower                 = 0x15F8; //
-int Offsets::ObjAtkSpeedMulti                = 0x11C8; //
+int Offsets::ObjAtkSpeedMulti                = 0x1650; //
 int Offsets::ObjAtkRange                     = 0x16C4; //
 int Offsets::ObjTargetable					 = 0xEB0; //
 int Offsets::ObjInvulnerable				 = 0x4F0; //
@@ -53,7 +53,7 @@ int Offsets::ObjMagicPen					 = 0x158C;
 int Offsets::ObjMagicPenMulti				 = 0x11C8;
 int Offsets::ObjAdditionalApMulti			 = 0x12E8; 
 int Offsets::ObjManaRegen					 = 0x11E8;
-int Offsets::ObjHealthRegen					 = 0x16B8; //
+int Offsets::ObjHealthRegen					 = 0x1690; //
 
 int Offsets::Ping							 = 0x51AD648; //
 int Offsets::OffPing						 = 0x178; //
@@ -66,12 +66,12 @@ int Offsets::SpellBookActiveSpellCast = 0x2A00; // ManaCosts = 0x90;
 int Offsets::SpellBookSpellSlots = 0x750; // Spellbook spells
 
 int Offsets::ObjBuffManager = 0x27C0;
-int Offsets::BuffManagerEntriesArray = 0x18;
-int Offsets::BuffEntryBuff = 0x10;
+int Offsets::BuffManagerEntriesArray = 0x10;
+int Offsets::BuffEntryBuff = 0x8;
 int Offsets::BuffType = 0x4;
-int Offsets::BuffEntryBuffStartTime = 0x18;
-int Offsets::BuffEntryBuffEndTime = 0x1C;
-int Offsets::BuffEntryBuffCount = 0x3C;
+int Offsets::BuffEntryBuffStartTime = 0xC;
+int Offsets::BuffEntryBuffEndTime = 0x10;
+int Offsets::BuffEntryBuffCount = 0x74;
 int Offsets::BuffEntryBuffCountAlt = 0x24;
 int Offsets::BuffEntryBuffCountAlt2 = 0x20;
 int Offsets::BuffName = 0x8;
@@ -89,8 +89,8 @@ int Offsets::IsMoving = 0x198;
 int Offsets::NavBegin = 0x1BC;
 int Offsets::NavEnd = 0x1C0;
 
-int Offsets::ViewProjMatrices = 0x5219A80; // 15.7 48 8D 0D ? ? ? ? 0F 10 00 
-int Offsets::Renderer = 0x5221F28; // 15.7 48 8B 0D ? ? ? ? 4C 8D 45 87 48 8B D0
+int Offsets::ViewProjMatrices = 0x5219a80; // 15.7 48 8D 0D ? ? ? ? 0F 10 00 
+int Offsets::Renderer = 0x520E088; // 15.7 48 8B 0D ? ? ? ? 4C 8D 45 87 48 8B D0
 int Offsets::RendererWidth = 0xC; //
 int Offsets::RendererHeight = 0x10; //
 
@@ -107,15 +107,15 @@ int Offsets::SpellDataMissileName = 0x80; // ? spelldataName
 int Offsets::SpellSlotSmiteTimer = 0x60;
 int Offsets::SpellSlotSmiteCharges = 0x5C;
 
-int Offsets::ObjectManager = 0x21218C8; // 15.7 [actual address in first opcode] 89 57 10 48 8B 0D ? ? ? ?
+int Offsets::ObjectManager = 0x20D0E78; // 15.7 [actual address in first opcode] 89 57 10 48 8B 0D ? ? ? ?
 
-int Offsets::HeroList = 0x21219E8; //0x20D5978
-int Offsets::MinionList = 0x397C278; //
-int Offsets::MissileList = 0x51DA600; //
-int Offsets::TurretList = 0x51C8860; //
+int Offsets::HeroList = 0x21219e8; //0x20D5978
+int Offsets::MinionList = 0x397c278; //
+int Offsets::MissileList = 0x51C6A50; //
+int Offsets::TurretList = 0x51c8860; //
 
-int Offsets::LocalPlayer = 0x51DA528; // 15.7 48 8B 3D ?? ?? ?? ?? 48 3B CF
-int Offsets::UnderMouseObject = 0x397C468; // 15.7 48 89 0D ? ? ? ? 48 8D 05 ? ? ? ? 48 89 01 33 D2
+int Offsets::LocalPlayer = 0x51C6980; // 15.7 48 8B 3D ?? ?? ?? ?? 48 3B CF
+int Offsets::UnderMouseObject = 0x3968958; // 15.7 48 89 0D ? ? ? ? 48 8D 05 ? ? ? ? 48 89 01 33 D2
 
 int Offsets::ObjectMapCount               = 0x48; //
 int Offsets::ObjectMapRoot                = 0x40; //
@@ -153,4 +153,4 @@ int Offsets::AiManagerDashSpeed = 0x1F8;
 int Offsets::ServerPos = 0x2EC;
 int Offsets::Velocity = 0x2F8;
 
-int Offsets::HudInstance = 0x21218D8; //
+int Offsets::HudInstance = 0x210DDD8; //
