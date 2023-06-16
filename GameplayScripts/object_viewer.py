@@ -182,8 +182,8 @@ def draw_game_object(obj, ui, additional_draw=None, set_open=False):
 
         ui.checkbox("is_visible", obj.is_visible)
 
-        if additional_draw != None:
-            additional_draw()
+        #if additional_draw != None:
+        #    additional_draw()
 
         ui.treepop()
 

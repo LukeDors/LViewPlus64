@@ -2,6 +2,9 @@
 #include "windows.h"
 #include "Utils.h"
 #include "Structs.h"
+#include <iostream>
+#include <fstream>
+#include <string>
 #include "psapi.h"
 #include <limits>
 #include <stdexcept>
@@ -100,20 +103,52 @@ void LeagueMemoryReader::ReadChamps(MemSnapshot& ms) {
 	auto HeroList = Mem::ReadDWORD(hProcess, moduleBaseAddr + Offsets::HeroList);
 	auto pList = Mem::ReadDWORD(hProcess, HeroList + 0x8);
 	UINT pSize = Mem::ReadDWORD(hProcess, HeroList + 0x10);
+
 	// Read objects from the pointers we just read
+	std::ifstream file("champnames.txt");
+	std::ofstream ofile("champnames.txt");
+	if (file.peek() == std::ifstream::traits_type::eof()) {
+		std::vector<std::string> names;
+		for (unsigned int i = 0; i < pSize; ++i) {
+			auto champObject = Mem::ReadDWORD(hProcess, pList + (0x8 * i));
+
+			std::shared_ptr<GameObject> obj;
+			obj = std::shared_ptr<GameObject>(new GameObject());
+			obj->LoadFromMem(champObject, hProcess, true);
+			ms.objectMap[obj->networkId] = obj;
+		
+			if (ofile.is_open()) {
+				ofile << obj->name<< std::endl;
+			}
+		}
+		ofile.close();
+	}
+
 	for (unsigned int i = 0; i < pSize; ++i) {
 		auto champObject = Mem::ReadDWORD(hProcess, pList + (0x8 * i));
 
 		std::shared_ptr<GameObject> obj;
 		obj = std::shared_ptr<GameObject>(new GameObject());
 		obj->LoadFromMem(champObject, hProcess, true);
+		std::vector<std::string> champs;
+		if (file.is_open()) {
+			std::string line;
+			while (std::getline(file, line)) {
+				if (!file.eof()) {
+					champs.push_back(line);
+				}
+			}
+		}
+		file.close();
+		obj->name = champs[i];
 		ms.objectMap[obj->networkId] = obj;
-
 		if (obj->name.size() <= 2 || blacklistedObjectNames.find(obj->name) != blacklistedObjectNames.end())
 			blacklistedObjects.insert(obj->networkId);
 //		else if (obj->HasUnitTags(Unit_Champion) && obj->level > 0) Level offset wrong
-		else if (obj->HasUnitTags(Unit_Champion))
+		else if (obj->HasUnitTags(Unit_Champion)) {
+			obj->LoadChampionFromMem(champObject, hProcess, true);
 			ms.champions.push_back(obj);
+		}
 		else
 			ms.others.push_back(obj);
 	}
@@ -179,11 +214,13 @@ void LeagueMemoryReader::ReadMissiles(MemSnapshot& ms) {
 		ms.objectMap[obj->networkId] = obj;
 		if (obj->name.size() <= 2 || blacklistedObjectNames.find(obj->name) != blacklistedObjectNames.end())
 			blacklistedObjects.insert(obj->networkId);
-		else if (obj->spellInfo != GameData::UnknownSpell)
+		else if (obj->spellInfo != GameData::UnknownSpell) {
+			//obj->LoadMissileFromMem(champObject, hProcess, true);
 			ms.missiles.push_back(obj);
+		}
 		else if ((obj->HasUnitTags(Unit_Ward) && !obj->HasUnitTags(Unit_Plant)))
 			ms.others.push_back(obj);
-		}
+	}
 
 	readDuration = high_resolution_clock::now() - readTimeBegin;
 	ms.benchmark->readObjectsMs = readDuration.count();
@@ -195,6 +232,7 @@ void LeagueMemoryReader::ReadTurrets(MemSnapshot& ms) {
 	readTimeBegin = high_resolution_clock::now();
 
 	ms.turrets.clear();
+
 	auto TurretList = Mem::ReadDWORD(hProcess, moduleBaseAddr + Offsets::TurretList);
 	auto pList = Mem::ReadDWORD(hProcess, TurretList + 0x8);
 	UINT pSize = Mem::ReadDWORD(hProcess, TurretList + 0x10);

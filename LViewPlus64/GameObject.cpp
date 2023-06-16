@@ -182,6 +182,7 @@ void GameObject::LoadFromMem(DWORD64 base, HANDLE hProcess, bool deepLoad) {
 
 	if (deepLoad) {
 
+
 		char nameBuff[50];
 		Mem::Read(hProcess, Mem::ReadDWORDFromBuffer(buff, Offsets::ObjName), nameBuff, 50);
 
@@ -201,25 +202,26 @@ void GameObject::LoadFromMem(DWORD64 base, HANDLE hProcess, bool deepLoad) {
 				name = std::string("");
 		}
 		unitInfo = GameData::GetUnitInfoByName(name);
+
+		//if (HasUnitTags(Unit_Champion)) {
+		//	LoadChampionFromMem(base, hProcess, deepLoad);
+		//	LoadBuffFromMem(base, hProcess, deepLoad);
+		//}
+		//else if (unitInfo == GameData::UnknownUnit) {
+		//	LoadMissileFromMem(base, hProcess, deepLoad);
+		//}
+		//else if (HasUnitTags(Unit_Monster)) {
+		//	LoadBuffFromMem(base, hProcess, deepLoad);
+		//}
+		//else if (HasUnitTags(Unit_Minion_Lane)) {
+		//	LoadBuffFromMem(base, hProcess, deepLoad);
+		//}
 	}
 
-/* doesnt work for now
+ //doesnt work for now
 
 	// Don't use buffmanager for minions making lag idk ?
-	if (HasUnitTags(Unit_Champion)) {
-		LoadChampionFromMem(base, hProcess, deepLoad);
-		LoadBuffFromMem(base, hProcess, deepLoad);
-	}
-	else if (unitInfo == GameData::UnknownUnit) {
-		LoadMissileFromMem(base, hProcess, deepLoad);
-	}
-	else if (HasUnitTags(Unit_Monster)) {
-		LoadBuffFromMem(base, hProcess, deepLoad);
-	}
-	else if (HasUnitTags(Unit_Minion_Lane)) {
-		LoadBuffFromMem(base, hProcess, deepLoad);
-		
-	*/
+	
 
 	DWORD64 aiManagerAddress = get_ai_address(base, hProcess, deepLoad);
 
@@ -260,7 +262,7 @@ void GameObject::LoadChampionFromMem(DWORD64 base, HANDLE hProcess, bool deepLoa
 	DWORD64 ptrList = Mem::ReadDWORD(hProcess, address + Offsets::ObjItemList);
 	Mem::Read(hProcess, ptrList, itemListBuffer, 0x100);
 
-	for (int i = 0; i < 7; ++i) {
+	/*for (int i = 0; i < 7; ++i) {
 		itemSlots[i].isEmpty = true;
 		itemSlots[i].slot = i;
 
@@ -276,11 +278,12 @@ void GameObject::LoadChampionFromMem(DWORD64 base, HANDLE hProcess, bool deepLoa
 		int id = Mem::ReadDWORD(hProcess, itemInfoPtr + Offsets::ItemInfoId);
 		itemSlots[i].isEmpty = false;
 		itemSlots[i].stats = GameData::GetItemInfoById(id);
-	}
+	}*/
 
 	level = Mem::ReadDWORD(hProcess, base + Offsets::ObjLvl);
 }
 
+//red or blue buff?
 void GameObject::LoadBuffFromMem(DWORD64 base, HANDLE hProcess, bool deepLoad) {
 	DWORD64 buffArrayBgn = Mem::ReadDWORD(hProcess, address + Offsets::ObjBuffManager + Offsets::BuffManagerEntriesArray);
 	DWORD64 buffArrayEnd = Mem::ReadDWORD(hProcess, address + Offsets::ObjBuffManager + 0x14);
