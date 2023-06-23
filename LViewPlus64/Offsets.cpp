@@ -10,7 +10,7 @@ int Offsets::GameTime = 0x51E8C70; //
 
 int Offsets::ObjIndex = 0x10; 
 int Offsets::ObjTeam = 0x3C; 
-int Offsets::ObjMissileName = 0x54;
+int Offsets::ObjMissileName = 0x54; //
 int Offsets::ObjNetworkID = 0xC8; 
 int Offsets::ObjPos = 0x220; 
 int Offsets::ObjMissileSpellCast = 0x250;
@@ -92,7 +92,7 @@ int Offsets::NavEnd = 0x1C0;
 int Offsets::ViewProjMatrices = 0x5236720; //
 int Offsets::Renderer = 0x523EBC8; //
 int Offsets::RendererWidth = 0xC; 
-int Offsets::RendererHeight = 0x10; 
+int Offsets::RendererHeight = 0x10;
 
 int Offsets::SpellSlotLevel = 0x28;  
 int Offsets::SpellSlotTime = 0x30; 
@@ -100,10 +100,10 @@ int Offsets::SpellSlotAmmo = 0x54;
 int Offsets::SpellSlotCharges = 0x5C;
 int Offsets::SpellSlotTimeCharge = 0x6C; 
 int Offsets::SpellSlotDamage = 0x90;
-int Offsets::SpellSlotSpellInfo = 0x130; 
-int Offsets::SpellInfoSpellData = 0x60; 
-int Offsets::SpellDataSpellName = 0x80; 
-int Offsets::SpellDataMissileName = 0x80; 
+int Offsets::SpellSlotSpellInfo = 0x130; //
+int Offsets::SpellInfoSpellData = 0x60; //
+int Offsets::SpellDataSpellName = 0x80; //
+int Offsets::SpellDataMissileName = 0xB0; //
 int Offsets::SpellSlotSmiteTimer = 0x60;
 int Offsets::SpellSlotSmiteCharges = 0x5C;
 
@@ -131,11 +131,11 @@ int Offsets::SpellCastEnd = 0x8C;
 int Offsets::SpellCastSrcIdx = 0x68;
 int Offsets::SpellCastDestIdx = 0xC0;
 
-int Offsets::MissileSpellInfo = 0x2E8; 
-int Offsets::MissileSrcIdx = 0x370;
-int Offsets::MissileDestIdx = 0x3C8;
-int Offsets::MissileStartPos = 0x38C;
-int Offsets::MissileEndPos = 0x398;
+int Offsets::MissileSpellInfo = 0x2E8; //
+int Offsets::MissileSrcIdx = 0x370; //
+int Offsets::MissileDestIdx = 0x3C8; //
+int Offsets::MissileStartPos = 0x38C; //
+int Offsets::MissileEndPos = 0x398; //
 
 int Offsets::MinimapObject = 0x51E8CD0; //
 int Offsets::MinimapObjectHud = 0x320; //

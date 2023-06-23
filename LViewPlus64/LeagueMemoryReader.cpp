@@ -123,24 +123,26 @@ void LeagueMemoryReader::ReadChamps(MemSnapshot& ms) {
 		}
 		ofile.close();
 	}
+	file.close();
 
-	for (unsigned int i = 0; i < pSize; ++i) {
-		auto champObject = Mem::ReadDWORD(hProcess, pList + (0x8 * i));
+	std::ifstream ifile("champnames.txt");
+	std::vector<std::string> champs;
+	for (unsigned int f = 0; f < pSize; ++f) {
+		auto champObject = Mem::ReadDWORD(hProcess, pList + (0x8 * f));
 
 		std::shared_ptr<GameObject> obj;
 		obj = std::shared_ptr<GameObject>(new GameObject());
 		obj->LoadFromMem(champObject, hProcess, true);
-		std::vector<std::string> champs;
-		if (file.is_open()) {
+		if (ifile.is_open()) {
 			std::string line;
-			while (std::getline(file, line)) {
-				if (!file.eof()) {
+			while (std::getline(ifile, line)) {
+				if (!ifile.eof()) {
 					champs.push_back(line);
 				}
 			}
 		}
-		file.close();
-		obj->name = champs[i];
+		obj->name = champs[f];
+		obj->unitInfo->tags[2] = 1;
 		ms.objectMap[obj->networkId] = obj;
 		if (obj->name.size() <= 2 || blacklistedObjectNames.find(obj->name) != blacklistedObjectNames.end())
 			blacklistedObjects.insert(obj->networkId);
@@ -152,6 +154,7 @@ void LeagueMemoryReader::ReadChamps(MemSnapshot& ms) {
 		else
 			ms.others.push_back(obj);
 	}
+	ifile.close();
 
 	readDuration = high_resolution_clock::now() - readTimeBegin;
 	ms.benchmark->readObjectsMs = readDuration.count();
@@ -212,14 +215,15 @@ void LeagueMemoryReader::ReadMissiles(MemSnapshot& ms) {
 		obj = std::shared_ptr<GameObject>(new GameObject());
 		obj->LoadFromMem(champObject, hProcess, true);
 		ms.objectMap[obj->networkId] = obj;
-		if (obj->name.size() <= 2 || blacklistedObjectNames.find(obj->name) != blacklistedObjectNames.end())
-			blacklistedObjects.insert(obj->networkId);
-		else if (obj->spellInfo != GameData::UnknownSpell) {
-			//obj->LoadMissileFromMem(champObject, hProcess, true);
-			ms.missiles.push_back(obj);
-		}
-		else if ((obj->HasUnitTags(Unit_Ward) && !obj->HasUnitTags(Unit_Plant)))
+		if ((obj->HasUnitTags(Unit_Ward) && !obj->HasUnitTags(Unit_Plant)))
 			ms.others.push_back(obj);
+		else
+			obj->LoadMissileFromMem(champObject, hProcess, true);
+		//if (obj->name.size() <= 2 || blacklistedObjectNames.find(obj->name) != blacklistedObjectNames.end())
+		//	blacklistedObjects.insert(obj->networkId);
+		//else if (obj->spellInfo != GameData::UnknownSpell) {
+			ms.missiles.push_back(obj);
+		//}
 	}
 
 	readDuration = high_resolution_clock::now() - readTimeBegin;
@@ -249,10 +253,10 @@ void LeagueMemoryReader::ReadTurrets(MemSnapshot& ms) {
 
 		if (obj->name.size() <= 2 || blacklistedObjectNames.find(obj->name) != blacklistedObjectNames.end())
 			blacklistedObjects.insert(obj->networkId);
-		else if (obj->HasUnitTags(Unit_Structure_Turret))
-			ms.turrets.push_back(obj);
 		else if ((obj->HasUnitTags(Unit_Ward) && !obj->HasUnitTags(Unit_Plant)))
 			ms.others.push_back(obj);
+		else
+			ms.turrets.push_back(obj);
 	}
 
 	readDuration = high_resolution_clock::now() - readTimeBegin;

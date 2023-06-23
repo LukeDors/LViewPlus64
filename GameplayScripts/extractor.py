@@ -182,8 +182,8 @@ def dump(obj):
     "bot_lane_pushed": bot_wave_pushed
     }
     for champ in champlist:
-        #s1 = str(champ.D.summoner_spell_type)
-        #s2 = str(champ.F.summoner_spell_type)
+        s1 = str(champ.D.summoner_spell_type)
+        s2 = str(champ.F.summoner_spell_type)
         name = champ.name
         # if name == 'monkeyking':
         #     name = 'wukong'
@@ -214,34 +214,34 @@ def dump(obj):
             "atk_speed_multi": champ.atk_speed_multi,
             "movement_speed": champ.movement_speed,
             "last_visible_at": champ.last_visible_at,
-             #"Q": {"level": champ.Q.level,
-             #    "ready_at": champ.Q.ready_at,
-             #    "speed": champ.Q.speed,
-             #    "cast_range": champ.Q.cast_range,
-             #    "width": champ.Q.width,
-             #    "delay": champ.Q.delay},
-             #"W": {"level": champ.W.level,
-             #    "ready_at": champ.W.ready_at,
-             #    "speed": champ.W.speed,
-             #    "cast_range": champ.W.cast_range,
-             #    "width": champ.W.width,
-             #    "delay": champ.W.delay},
-             #"E": {"level": champ.E.level,
-             #    "ready_at": champ.E.ready_at,
-             #    "speed": champ.E.speed,
-             #    "cast_range": champ.E.cast_range,
-             #    "width": champ.E.width,
-             #    "delay": champ.E.delay},
-             #"R": {"level": champ.R.level,
-             #    "ready_at": champ.R.ready_at,
-             #    "speed": champ.R.speed,
-             #    "cast_range": champ.R.cast_range,
-             #    "width": champ.R.width,
-             #    "delay": champ.R.delay},
-             #"D": {"name": s1,
-             #    "ready_at": champ.D.ready_at},
-             #"F": {"name": s2,
-             #    "ready_at": champ.F.ready_at}
+             "Q": {"level": champ.Q.level,
+                 "ready_at": champ.Q.ready_at,
+                 "speed": champ.Q.speed,
+                 "cast_range": champ.Q.cast_range,
+                 "width": champ.Q.width,
+                 "delay": champ.Q.delay},
+             "W": {"level": champ.W.level,
+                 "ready_at": champ.W.ready_at,
+                 "speed": champ.W.speed,
+                 "cast_range": champ.W.cast_range,
+                 "width": champ.W.width,
+                 "delay": champ.W.delay},
+             "E": {"level": champ.E.level,
+                 "ready_at": champ.E.ready_at,
+                 "speed": champ.E.speed,
+                 "cast_range": champ.E.cast_range,
+                 "width": champ.E.width,
+                 "delay": champ.E.delay},
+             "R": {"level": champ.R.level,
+                 "ready_at": champ.R.ready_at,
+                 "speed": champ.R.speed,
+                 "cast_range": champ.R.cast_range,
+                 "width": champ.R.width,
+                 "delay": champ.R.delay},
+             "D": {"name": s1,
+                 "ready_at": champ.D.ready_at},
+             "F": {"name": s2,
+                 "ready_at": champ.F.ready_at}
         })
 
     #if obj.time == gametime and gametime > 20:
