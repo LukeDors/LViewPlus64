@@ -136,6 +136,10 @@ int Offsets::MissileSrcIdx = 0x370; //
 int Offsets::MissileDestIdx = 0x3C8; //
 int Offsets::MissileStartPos = 0x38C; //
 int Offsets::MissileEndPos = 0x398; //
+int Offsets::MissileMapCount = 0x10;
+int Offsets::MissileMapRoot = 0x8;
+int Offsets::MissileMapKey = 0x20;
+int Offsets::MissileMapVal = 0x28;
 
 int Offsets::MinimapObject = 0x51E8CD0; //
 int Offsets::MinimapObjectHud = 0x320; //

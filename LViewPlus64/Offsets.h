@@ -128,6 +128,10 @@ public:
 	static int MissileDestIdx;
 	static int MissileStartPos;
 	static int MissileEndPos;
+	static int MissileMapCount;
+	static int MissileMapRoot;
+	static int MissileMapKey;
+	static int MissileMapVal;
 
 	static int SpellCastSpellInfo;
 	static int SpellCastStartTime;
