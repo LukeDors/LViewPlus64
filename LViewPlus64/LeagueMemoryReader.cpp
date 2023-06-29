@@ -260,19 +260,19 @@ void LeagueMemoryReader::ReadMissiles(MemSnapshot& ms) {
 	////obj->LoadMissileFromMem(obj, hProcess, true);
 	//missiles.push_back(std::move(obj));
 	//cout << counter << endl;
-	static char buff[0x500];
+	static char buff[0x1000];
 
 	int missileMapPtr = Mem::ReadDWORD(hProcess, moduleBaseAddr + Offsets::MissileList);
 	Mem::Read(hProcess, missileMapPtr, buff, 0x100);
-	DWORD numMissiles, rootNode;
-	memcpy(&numMissiles, buff + Offsets::MissileMapCount, sizeof(DWORD64));
-	memcpy(&rootNode, buff + Offsets::MissileMapRoot, sizeof(DWORD64));
+	int numMissiles, rootNode;
+	memcpy(&numMissiles, buff + Offsets::MissileMapCount, sizeof(int));
+	memcpy(&rootNode, buff + Offsets::MissileMapRoot, sizeof(int));
 
 	std::queue<int> nodesToVisit;
 	std::set<int> visitedNodes;
 	nodesToVisit.push(rootNode);
 
-	UINT childNode1, childNode2, childNode3, node;
+	int childNode1, childNode2, childNode3, node;
 	while (nodesToVisit.size() > 0 && visitedNodes.size() < numMissiles * 2) {
 		node = nodesToVisit.front();
 		nodesToVisit.pop();
