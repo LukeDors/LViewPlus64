@@ -203,156 +203,151 @@ void LeagueMemoryReader::ReadMissiles(MemSnapshot& ms) {
 
 	ms.missiles.clear();
 
-	//std::vector<std::unique_ptr<GameObject>> missiles;
-	//std::vector<UINT64> missiles;
-	//UINT64 missile_list = Mem::ReadDWORD(hProcess, moduleBaseAddr + Offsets::MissileList + 0x8);
-	//UINT64 root = missile_list;
-	//int counter = 1;
+	
+	static char buff[0x500];
 
-	//missiles.push_back(root);
+	UINT64 missile_list = Mem::ReadDWORD(hProcess, moduleBaseAddr + Offsets::MissileList);
+	UINT64 numMissiles, rootNode;
+	memcpy(&numMissiles, buff + Offsets::MissileMapCount, sizeof(UINT64));
+	memcpy(&rootNode, buff + Offsets::MissileMapRoot, sizeof(UINT64));
 
-	//while (missiles.size() > 0)
-	//{
-	//	UINT64 node = missiles.front();
-	//	missiles.pop_back();
-	//	//cout << node << endl;
-	//	UINT64 nd1 = Mem::ReadDWORD(hProcess, node + 0x0);
-	//	UINT64 nd2 = Mem::ReadDWORD(hProcess, node + 0x8);
-	//	UINT64 nd3 = Mem::ReadDWORD(hProcess, node + 0x10);
-	//	if (nd1 != root && nd1)
-	//	{
-	//		//cout << nd1 << endl;
-	//		missiles.push_back(nd1);
-	//		counter++;
-	//	}
-	//	if (nd2 != root && nd2)
-	//	{
-	//		//cout << nd2 << endl;
-	//		missiles.push_back(nd2);
-	//		counter++;
-	//	}
-	//	if (nd3 != root && nd3)
-	//	{
-	//		//cout << nd3 << endl;
-	//		missiles.push_back(nd3);
-	//		counter++;
-	//	}
-	//}
-	//for (unsigned int i = 0; i < missiles.size(); ++i) {
-	//	auto champObject = Mem::ReadDWORD(hProcess, missiles[i]);
-	//	std::shared_ptr<GameObject> obj;
+	std::queue<UINT64> nodesToVisit;
+	std::set<UINT64> missilesVisited;
+
+	UINT64 root = missile_list;
+	std::cout << "root: " << root << std::endl;
+	int counter = 1;
+
+	nodesToVisit.push(root);
+
+	while (nodesToVisit.size() > 0)
+	{
+		UINT64 node = nodesToVisit.front(); nodesToVisit.pop();
+
+		auto pissObject = Mem::ReadDWORD(hProcess, node);
+
+		std::shared_ptr<GameObject> obj;
+		obj = std::shared_ptr<GameObject>(new GameObject());
+		obj->LoadFromMem(pissObject, hProcess, true);
+
+		obj->LoadMissileFromMem(pissObject, hProcess, true);
+
+		ms.missiles.push_back(obj);
+
+
+		if (missilesVisited.find(node) != missilesVisited.end())
+			break;
+		else
+			missilesVisited.insert(node);
+		std::cout << "node: " << node << std::endl;
+		UINT64 nd1 = Mem::ReadDWORD(hProcess, node + 0x0);
+		UINT64 nd2 = Mem::ReadDWORD(hProcess, node + 0x8);
+		UINT64 nd3 = Mem::ReadDWORD(hProcess, node + 0x10);
+		if (nd1 != root && nd1)
+		{
+			std::cout << "nd1: " << nd1 << std::endl;
+			nodesToVisit.push(nd1);
+		}
+		if (nd2 != root && nd2)
+		{
+			std::cout << "nd2: " << nd2 << std::endl;
+			nodesToVisit.push(nd2);
+		}
+		if (nd3 != root && nd3)
+		{
+			std::cout << "nd3: " << nd3 << std::endl;
+			nodesToVisit.push(nd3);
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//UINT64 childNode1, childNode2, childNode3, node;
+	//while (nodesToVisit.size() > 0 && visitedNodes.size() < numMissiles * 2) {
+	//	node = nodesToVisit.front();
+	//	nodesToVisit.pop();
+	//	visitedNodes.insert(node);
+
+	//	Mem::Read(hProcess, node, buff, 0x50);
+	//	memcpy(&childNode1, buff, sizeof(UINT64));
+	//	memcpy(&childNode2, buff + 4, sizeof(UINT64));
+	//	memcpy(&childNode3, buff + 8, sizeof(UINT64));
+
+	//	if (visitedNodes.find(childNode1) == visitedNodes.end())
+	//		nodesToVisit.push(childNode1);
+	//	if (visitedNodes.find(childNode2) == visitedNodes.end())
+	//		nodesToVisit.push(childNode2);
+	//	if (visitedNodes.find(childNode3) == visitedNodes.end())
+	//		nodesToVisit.push(childNode3);
+
+	//	UINT64 netId = 0;
+	//	memcpy(&netId, buff + Offsets::MissileMapKey, sizeof(UINT64));
+
+	//	// Actual missiles net_id start from 0x40000000 and throught the game this id will be incremented by 1 for each missile.
+	//	// So we use this information to check if missiles are valid.
+	//	/*if (netId - (UINT64)0x40000000 > 0x100000)
+	//		continue;*/
+
+	//	UINT64 addr;
+	//	memcpy(&addr, buff + Offsets::MissileMapVal, sizeof(UINT64));
+	//	if (addr == 0)
+	//		continue;
+
+	//	// The MissileClient is wrapped around another object
+	//	addr = Mem::ReadDWORD(hProcess, addr + 0x4);
+	//	if (addr == 0)
+	//		continue;
+
+	//	addr = Mem::ReadDWORD(hProcess, addr + 0x10);
+	//	if (addr == 0)
+	//		continue;
+
+	//	// At this point addr is the address of the MissileClient
+		//auto champObject = Mem::ReadDWORD(hProcess, addr);
+		//std::shared_ptr<GameObject> obj;
 	//	obj = std::shared_ptr<GameObject>(new GameObject());
 	//	obj->LoadFromMem(champObject, hProcess, true);
 	//	ms.objectMap[obj->networkId] = obj;
-	//	if ((obj->HasUnitTags(Unit_Ward) && !obj->HasUnitTags(Unit_Plant)))
-	//		ms.others.push_back(obj);
-	//	else
-	//		obj->LoadMissileFromMem(champObject, hProcess, true);
-		//if (obj->name.size() <= 2 || blacklistedObjectNames.find(obj->name) != blacklistedObjectNames.end())
-		//	blacklistedObjects.insert(obj->networkId);
-		//else if (obj->spellInfo != GameData::UnknownSpell) {
-			//ms.missiles.push_back(obj);
-	//}
-	//std::unique_ptr<GameObject> obj;
-	//obj = std::unique_ptr<GameObject>(new GameObject());
-	//obj->LoadFromMem(addr, hProcess);
 
-	////obj->LoadMissileFromMem(obj, hProcess, true);
-	//missiles.push_back(std::move(obj));
-	//cout << counter << endl;
-	static char buff[0x1000];
+	//	// Check one more time that we read a valid missile
+	//	if (obj->networkId != netId)
+	//		continue;
 
-	int missileMapPtr = Mem::ReadDWORD(hProcess, moduleBaseAddr + Offsets::MissileList);
-	Mem::Read(hProcess, missileMapPtr, buff, 0x100);
-	int numMissiles, rootNode;
-	memcpy(&numMissiles, buff + Offsets::MissileMapCount, sizeof(int));
-	memcpy(&rootNode, buff + Offsets::MissileMapRoot, sizeof(int));
-
-	std::queue<int> nodesToVisit;
-	std::set<int> visitedNodes;
-	nodesToVisit.push(rootNode);
-
-	int childNode1, childNode2, childNode3, node;
-	while (nodesToVisit.size() > 0 && visitedNodes.size() < numMissiles * 2) {
-		node = nodesToVisit.front();
-		nodesToVisit.pop();
-		visitedNodes.insert(node);
-
-		Mem::Read(hProcess, node, buff, 0x50);
-		memcpy(&childNode1, buff, sizeof(int));
-		memcpy(&childNode2, buff + 4, sizeof(int));
-		memcpy(&childNode3, buff + 8, sizeof(int));
-
-		if (visitedNodes.find(childNode1) == visitedNodes.end())
-			nodesToVisit.push(childNode1);
-		if (visitedNodes.find(childNode2) == visitedNodes.end())
-			nodesToVisit.push(childNode2);
-		if (visitedNodes.find(childNode3) == visitedNodes.end())
-			nodesToVisit.push(childNode3);
-
-		unsigned int netId = 0;
-		memcpy(&netId, buff + Offsets::MissileMapKey, sizeof(int));
-
-		// Actual missiles net_id start from 0x40000000 and throught the game this id will be incremented by 1 for each missile.
-		// So we use this information to check if missiles are valid.
-		if (netId - (unsigned int)0x40000000 > 0x100000)
-			continue;
-
-		int addr;
-		memcpy(&addr, buff + Offsets::MissileMapVal, sizeof(int));
-		if (addr == 0)
-			continue;
-
-		// The MissileClient is wrapped around another object
-		addr = Mem::ReadDWORD(hProcess, addr + 0x4);
-		if (addr == 0)
-			continue;
-
-		addr = Mem::ReadDWORD(hProcess, addr + 0x10);
-		if (addr == 0)
-			continue;
-
-		// At this point addr is the address of the MissileClient
-		auto champObject = Mem::ReadDWORD(hProcess, addr);
-		std::shared_ptr<GameObject> obj;
-		obj = std::shared_ptr<GameObject>(new GameObject());
-		obj->LoadFromMem(champObject, hProcess, true);
-		ms.objectMap[obj->networkId] = obj;
-
-		// Check one more time that we read a valid missile
-		if (obj->networkId != netId)
-			continue;
-
-		obj->LoadMissileFromMem(champObject, hProcess, true);
+		//obj->LoadMissileFromMem(champObject, hProcess, true);
 		//obj->LoadMissileFromMem(obj, hProcess, true);
 		//ms.missiles.push_back(std::move(obj));
-		ms.missiles.push_back(obj);
-
-	//auto MissileList = Mem::ReadDWORD(hProcess, moduleBaseAddr + Offsets::MissileList);
-	//auto pList = Mem::ReadDWORD(hProcess, MissileList + 0x8);
-	//UINT pSize = Mem::ReadDWORD(hProcess, MissileList + 0x10);
-
-	//// Read objects from the pointers we just read
-	//for (unsigned int i = 0; i < pSize; ++i) {
-	//	auto champObject = Mem::ReadDWORD(hProcess, pList + (0x8 * i));
-
-		//std::shared_ptr<GameObject> obj;
-		//obj = std::shared_ptr<GameObject>(new GameObject());
-		//obj->LoadFromMem(champObject, hProcess, true);
-		//ms.objectMap[obj->networkId] = obj;
-		//if ((obj->HasUnitTags(Unit_Ward) && !obj->HasUnitTags(Unit_Plant)))
-		//	ms.others.push_back(obj);
-		//else
-		//	obj->LoadMissileFromMem(champObject, hProcess, true);
-		////if (obj->name.size() <= 2 || blacklistedObjectNames.find(obj->name) != blacklistedObjectNames.end())
-		////	blacklistedObjects.insert(obj->networkId);
-		////else if (obj->spellInfo != GameData::UnknownSpell) {
-		//	ms.missiles.push_back(obj);
-		////}
-	}
+		//ms.missiles.push_back(obj);
 
 	readDuration = high_resolution_clock::now() - readTimeBegin;
 	ms.benchmark->readObjectsMs = readDuration.count();
+	std::cout << "end of this shit" << std::endl;
 }
 
 void LeagueMemoryReader::ReadTurrets(MemSnapshot& ms) {
